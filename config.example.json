@@ -1,0 +1,55 @@
+{
+  "//": "REFERENCE copy of every setting with its default value.",
+  "//clientId": "Your Discord Application ID (digits only). Or bake a shared default into src/config.js (DEFAULT_CLIENT_ID) so users need zero setup. Run `claude-presence setup` for a guided flow.",
+  "clientId": "PUT-YOUR-DISCORD-APPLICATION-ID-HERE",
+
+  "//detection": "How and how often Claude is detected.",
+  "pollIntervalSeconds": 15,
+  "claudeProcessNames": ["Claude.exe", "Claude"],
+  "detectActiveWindow": false,
+
+  "//behaviour": "'clear' keeps the helper alive and hides presence on close; 'exit' shuts it down.",
+  "onClaudeClose": "clear",
+  "logLevel": "info",
+  "showTimer": true,
+
+  "//model": "Which model to show. The app doesn't expose this reliably, so 'label' is the dependable source; 'detect' is best-effort and may be blank.",
+  "model": {
+    "show": true,
+    "label": "Opus 4.8",
+    "detect": true
+  },
+
+  "//usage": "The desktop app is a flat subscription (no per-message $), so we show your plan name + real local time instead of a misleading dollar figure.",
+  "usage": {
+    "show": true,
+    "planLabel": "Claude",
+    "showToday": true,
+    "showMonth": true
+  },
+
+  "//presence": "How the status looks. Image values are EITHER an asset key uploaded to your app OR a full https URL to a PNG/JPG (no upload needed).",
+  "presence": {
+    "activeType": 0,
+    "largeImage": "claude_logo",
+    "largeText": "Claude",
+    "smallImageActive": "active",
+    "smallImageIdle": "idle",
+    "smallTextActive": "Active",
+    "smallTextIdle": "Idle",
+    "details": "Chatting with Claude",
+    "stateActive": "Actively in a conversation",
+    "stateIdle": "Claude is open",
+    "rotateMessages": [
+      "Asking Claude the big questions",
+      "Pair-programming with Claude",
+      "Brainstorming with Claude",
+      "Refactoring with a friend"
+    ],
+    "rotateIntervalSeconds": 30,
+    "buttons": [
+      { "label": "Try Claude", "url": "https://claude.ai" },
+      { "label": "Get this plugin", "url": "https://github.com/YOUR_USERNAME/claude-discord-presence" }
+    ]
+  }
+}
