@@ -14,9 +14,6 @@ a live timer, rotating status messages, and clickable buttons.
 
 </div>
 
-> **Replace `YOUR_USERNAME`** in this README, `package.json`, and `config.example.json` with your
-> actual GitHub username after you fork/upload.
-
 ---
 
 ## What it looks like
