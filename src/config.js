@@ -12,19 +12,32 @@
 const fs = require('fs');
 const { configPath, ensureDataDir } = require('./paths');
 
-// ────────────────────────────────────────────────────────────────────────────
-// OPTIONAL — bake in a shared Discord Application ID so EVERYONE who installs
-// your fork gets working presence with ZERO setup. Create ONE Discord app
-// (README → Discord setup), paste its Application ID between the quotes, and
-// commit. If left empty, each user supplies their own ID via config/`setup`.
-// ────────────────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════════════
+// ► THE ONE-TIME SETUP SWITCH ◄
+// Paste a shared Discord Application ID between the quotes below and commit it.
+// Once it's set, EVERYONE who installs this build gets working Rich Presence
+// with ZERO setup — no Developer Portal, no copying IDs, no per-user config.
+//
+// To create it (about 2 minutes, done ONCE by you — not by your users):
+//   1. https://discord.com/developers/applications → New Application, name it
+//      "Claude" (this becomes the "Playing Claude" label).
+//   2. Copy its Application ID (the long number) and paste it below.
+//   3. Rich Presence → Art Assets → upload the large icon as key `claude_logo`
+//      (optional: `active` / `idle` overlays). Uploaded once here, it shows for
+//      every installer — they never touch Discord.
+//
+// Leave it empty and the app still works, falling back to a per-user ID that
+// each person supplies via `claude-presence setup` or their config file.
+// ════════════════════════════════════════════════════════════════════════════
 const DEFAULT_CLIENT_ID = '';
 
 const DEFAULT_CONFIG = {
   // ── Discord ───────────────────────────────────────────────────────────
-  // The Application (Client) ID of YOUR Discord application.
-  // Create one at https://discord.com/developers/applications — see the README.
-  clientId: 'PUT-YOUR-DISCORD-APPLICATION-ID-HERE',
+  // Leave empty to use the shared Discord app baked into this build
+  // (DEFAULT_CLIENT_ID above) — that's the zero-setup default, and what most
+  // users should keep. Only set this to override with your OWN Discord
+  // Application ID. See the README.
+  clientId: '',
 
   // ── Detection ─────────────────────────────────────────────────────────
   pollIntervalSeconds: 15, // how often to check whether Claude is running
@@ -88,7 +101,7 @@ const DEFAULT_CONFIG = {
     // Up to 2 buttons (Discord limit). URLs must be http(s).
     buttons: [
       { label: 'Try Claude', url: 'https://claude.ai' },
-      { label: 'Get this plugin', url: 'https://github.com/YOUR_USERNAME/claude-discord-presence' },
+      { label: 'Get this plugin', url: 'https://github.com/HeavenDCS/claude-discord-presence' },
     ],
   },
 };

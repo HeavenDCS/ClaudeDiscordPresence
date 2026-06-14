@@ -66,8 +66,8 @@ games, etc. — just pointed at Claude.
 - 🟢 **Active vs Idle** *(optional)* — show a different state when Claude is the focused window
   versus running in the background.
 - 🔘 **Buttons** — up to two clickable links (e.g. *Try Claude*, *Get this plugin*).
-- 🪄 **Easy setup** — a `claude-presence setup` wizard, a bakeable shared App ID for zero per-user
-  setup, and image-by-URL so you can skip uploading Discord assets. ([details ↓](#easy-setup-three-ways))
+- 🪄 **Zero Discord setup** — a shared Discord app is **built in**, so installers never touch the
+  Developer Portal. (Power users can still bring their own. [details ↓](#using-your-own-discord-app-optional))
 - 🔒 **Single instance, guaranteed** — a PID lock means **only one** helper can ever run.
   Closing and reopening Claude (or login autostart racing a manual start) **never** stacks
   duplicate processes. ([How it works ↓](#how-the-single-instance-lock-works))
@@ -85,7 +85,7 @@ games, etc. — just pointed at Claude.
 | **Node.js ≥ 16** | `node --version` to check. [Download here](https://nodejs.org). |
 | **Discord _desktop_ app** | Running and logged in. The **browser** version of Discord cannot show Rich Presence. |
 | **Claude Desktop App** | [claude.ai/download](https://claude.ai/download). |
-| **A Discord application** | Free; you create one to host the logo/images. [Setup below ↓](#step-2--create-your-discord-application). |
+| **A Discord application** | **Not needed** — a shared one is built in. Only if you want your own: [optional setup ↓](#using-your-own-discord-app-optional). |
 
 Works on **Windows 10/11**, **macOS**, and **Linux**. Windows is the most thoroughly tested path.
 
@@ -95,7 +95,7 @@ Works on **Windows 10/11**, **macOS**, and **Linux**. Windows is the most thorou
 
 ```bash
 # 1. Get the code
-git clone https://github.com/YOUR_USERNAME/claude-discord-presence.git
+git clone https://github.com/HeavenDCS/claude-discord-presence.git
 cd claude-discord-presence
 
 # 2. Install the `claude-presence` command globally (no dependencies are downloaded)
@@ -114,51 +114,28 @@ claude-presence doctor
 
 ---
 
-## Discord setup (one time, ~3 minutes)
+## Setup — it's automatic
 
-Rich Presence images live on a Discord **application** that you own. Here's the whole flow.
+This build ships with a **shared Discord application baked in**, so there's **nothing to do in the
+Discord Developer Portal** — you don't create an app, copy an ID, or upload any images. Install,
+start, open Claude:
 
-### Step 1 — Make sure Discord desktop is running
-Rich Presence only works through the installed desktop client, logged in.
-
-### Step 2 — Create your Discord application
-1. Go to the **[Discord Developer Portal → Applications](https://discord.com/developers/applications)**.
-2. Click **New Application**, name it **`Claude`** (this name becomes the "Playing **Claude**"
-   label), and **Create**.
-3. On the **General Information** page, copy the **Application ID** (a long number).
-
-### Step 3 — Upload the art assets
-1. In the left sidebar open **Rich Presence → Art Assets**.
-2. Click **Add Image(s)** and upload images using these **exact keys** (the key is the image's
-   name; it must match your config):
-
-   | Asset key | Used for | Suggested image |
-   |---|---|---|
-   | `claude_logo` | The large icon | The Claude logo (512×512 recommended) |
-   | `active` | Small overlay when Claude is focused *(optional)* | A green dot / "active" badge |
-   | `idle` | Small overlay when Claude is backgrounded *(optional)* | A grey/amber "idle" badge |
-
-   > Images can take a few minutes to become usable after uploading. Asset names must be at least
-   > 2 characters; lowercase + underscores is safest.
-
-   > **Want to skip this step?** Set `presence.largeImage` to a public `https://` PNG/JPG URL
-   > instead of an asset key — no upload needed. See [Easy setup → Image by URL](#easy-setup-three-ways).
-
-### Step 4 — Tell the helper your Application ID
-Open your config file (run `claude-presence config --path` to find it) and set `clientId`:
-
-```jsonc
-{
-  "clientId": "123456789012345678"   // ← your Application ID from Step 2
-}
-```
-
-### Step 5 — Start it
 ```bash
-claude-presence restart   # or `start` if it isn't running yet
+npm install -g .
+claude-presence install   # turn on run-at-login and start the helper now
 ```
 
-Open Claude, then look at your Discord profile. 🎉 Run `claude-presence doctor` if anything's off.
+Open Claude, then look at your Discord profile. 🎉 That's the whole setup. If anything looks off,
+run `claude-presence doctor` — it checks every piece and prints exact fixes.
+
+> Just need Discord running? Rich Presence only works through the **desktop** client, logged in —
+> the browser version can't show it.
+
+> Prefer a guided walkthrough (model label, plan name, autostart)? Run `claude-presence setup`.
+> It's optional — the defaults already work out of the box.
+
+> **Want your own Discord app instead** — to rename the "Playing **Claude**" label or host your own
+> images? You still can: see [Using your own Discord app](#using-your-own-discord-app-optional).
 
 ---
 
@@ -166,40 +143,49 @@ Open Claude, then look at your Discord profile. 🎉 Run `claude-presence doctor
 
 ```bash
 npm install -g .
-claude-presence setup     # guided: paste your Discord App ID, pick model + plan, enable autostart
-claude-presence status    # confirm it's running
+claude-presence install   # autostart + start now — the Discord app is already built in
 ```
 
-Prefer to do it by hand? `claude-presence config --path` → edit `clientId` → `claude-presence install`.
+Want to tweak your model label, plan name, or buttons first? Run `claude-presence setup` (guided)
+or edit the file shown by `claude-presence config --path`.
 
 ---
 
-## Easy setup (three ways)
+## Using your own Discord app (optional)
 
-Getting started is meant to be painless. Pick whichever fits:
+Most people never need this — the built-in shared app already gives you full Rich Presence. Set up
+your own only if you want to **rename the "Playing _Claude_" label**, **host your own images**, or
+**publish your own build**.
 
-1. **The wizard (recommended).** `claude-presence setup` walks you through the Discord App ID,
-   your model label, your plan name, and autostart — then starts the helper. One command, no
-   hand-editing JSON.
+### Point the helper at your own app
+1. Open the **[Discord Developer Portal → Applications](https://discord.com/developers/applications)**,
+   click **New Application**, and name it whatever you want the "Playing **___**" label to read.
+   Copy its **Application ID** (a long number).
+2. *(Optional — images)* **Rich Presence → Art Assets → Add Image(s)**, uploaded under these exact
+   keys: `claude_logo` (large icon), plus optional `active` / `idle` (small overlays). Or skip
+   uploads entirely and set `presence.largeImage` to a public `https://` PNG/JPG URL — Discord
+   proxies it (see [`assets/README.md`](assets/README.md)).
+3. Run `claude-presence setup` and paste the ID (or set `clientId` in your config), then
+   `claude-presence restart`.
 
-2. **Image by URL — skip uploading Discord art assets.** Instead of uploading images to the
-   Developer Portal, point `presence.largeImage` at any public `https://` PNG/JPG and Discord
-   proxies it. Drop a `claude.png` in [`assets/`](assets/), push it, and use its raw GitHub URL
-   (see [`assets/README.md`](assets/README.md)).
-
-3. **Zero setup for *your* users (bake in an App ID).** If you publish this fork, you can create
-   **one** Discord application and hardcode its Application ID as `DEFAULT_CLIENT_ID` near the top
-   of [`src/config.js`](src/config.js). Everyone who installs your fork then gets working presence
-   with **no Discord setup at all** — their config `clientId` can stay empty.
-
-   ```js
-   // src/config.js
-   const DEFAULT_CLIENT_ID = '123456789012345678'; // your app's ID — commit it once
+   ```jsonc
+   { "clientId": "123456789012345678" }   // ← your Application ID
    ```
 
+### Publishing a build where *your* users need zero setup
+This is exactly how the built-in shared app works. Create one app as above, then hardcode its
+Application ID as `DEFAULT_CLIENT_ID` near the top of [`src/config.js`](src/config.js) and commit
+it. Everyone who installs your build then gets working presence with **no Discord setup at all** —
+their `clientId` can stay empty.
+
+```js
+// src/config.js
+const DEFAULT_CLIENT_ID = '123456789012345678'; // your app's ID — commit it once
+```
+
 > A Discord Application ID is fundamentally required by Discord to show *any* Rich Presence — it
-> can't be removed. What these options remove is the **per-user** work: with a baked-in ID +
-> URL image, an end user installs and it just works.
+> can't be removed. Baking one in doesn't dodge that; it just moves the work off your users and
+> onto a single shared app, so installing "just works."
 
 ---
 
@@ -378,7 +364,7 @@ single-instance lock, autostart can never collide with a manual start.
 ```jsonc
 { "presence": { "buttons": [
   { "label": "My portfolio", "url": "https://example.com" },
-  { "label": "Say hi",       "url": "https://github.com/YOUR_USERNAME" }
+  { "label": "Say hi",       "url": "https://github.com/HeavenDCS" }
 ] } }
 ```
 
@@ -554,13 +540,13 @@ PRs welcome — see below.
 4. Open a PR describing the change and how you tested it.
 
 Bug reports and feature requests via
-[GitHub Issues](https://github.com/YOUR_USERNAME/claude-discord-presence/issues).
+[GitHub Issues](https://github.com/HeavenDCS/claude-discord-presence/issues).
 
 ---
 
 ## License
 
-[MIT](LICENSE) © 2026 HeavenDCS.
+[MIT](LICENSE) © 2026 Dayshan Spiteri.
 
 Unofficial and not affiliated with Anthropic or Discord. "Claude" and "Discord" are trademarks of
 their respective owners, used here only to describe interoperability.

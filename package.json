@@ -14,13 +14,13 @@
   ],
   "license": "MIT",
   "author": "Dayshan Spiteri <spiteridayshan@gmail.com>",
-  "homepage": "https://github.com/YOUR_USERNAME/claude-discord-presence#readme",
+  "homepage": "https://github.com/HeavenDCS/claude-discord-presence#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_USERNAME/claude-discord-presence.git"
+    "url": "https://github.com/HeavenDCS/claude-discord-presence.git"
   },
   "bugs": {
-    "url": "https://github.com/YOUR_USERNAME/claude-discord-presence/issues"
+    "url": "https://github.com/HeavenDCS/claude-discord-presence/issues"
   },
   "main": "src/daemon.js",
   "bin": {

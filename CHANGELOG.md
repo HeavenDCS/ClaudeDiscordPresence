@@ -3,6 +3,17 @@
 All notable changes to this project are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+- **Discord setup is now automatic by default.** With a shared `DEFAULT_CLIENT_ID`
+  baked into `src/config.js`, installers get working Rich Presence with no Discord
+  Developer Portal steps at all — the user-facing `clientId` defaults to empty and
+  falls back to the built-in app. Creating your own Discord app is now an optional
+  path (the README's setup section was rewritten accordingly).
+- Set the repository owner to **HeavenDCS** across `README.md`, `package.json`,
+  `config.example.json`, and the in-app button URLs.
+
 ## [1.1.0] — 2026-06-12
 
 ### Added

@@ -11,7 +11,7 @@ needed:
 ```jsonc
 {
   "presence": {
-    "largeImage": "https://raw.githubusercontent.com/YOUR_USERNAME/claude-discord-presence/main/assets/claude.png"
+    "largeImage": "https://raw.githubusercontent.com/HeavenDCS/claude-discord-presence/main/assets/claude.png"
   }
 }
 ```

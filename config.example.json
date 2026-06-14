@@ -1,7 +1,7 @@
 {
   "//": "REFERENCE copy of every setting with its default value.",
-  "//clientId": "Your Discord Application ID (digits only). Or bake a shared default into src/config.js (DEFAULT_CLIENT_ID) so users need zero setup. Run `claude-presence setup` for a guided flow.",
-  "clientId": "PUT-YOUR-DISCORD-APPLICATION-ID-HERE",
+  "//clientId": "Leave EMPTY to use the shared Discord app baked into this build (zero setup — the normal case). Only set this to override with your OWN Discord Application ID (digits only). `claude-presence setup` can do it for you.",
+  "clientId": "",
 
   "//detection": "How and how often Claude is detected.",
   "pollIntervalSeconds": 15,
@@ -49,7 +49,7 @@
     "rotateIntervalSeconds": 30,
     "buttons": [
       { "label": "Try Claude", "url": "https://claude.ai" },
-      { "label": "Get this plugin", "url": "https://github.com/YOUR_USERNAME/claude-discord-presence" }
+      { "label": "Get this plugin", "url": "https://github.com/HeavenDCS/claude-discord-presence" }
     ]
   }
 }
