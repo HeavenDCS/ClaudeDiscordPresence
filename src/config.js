@@ -29,7 +29,7 @@ const { configPath, ensureDataDir } = require('./paths');
 // Leave it empty and the app still works, falling back to a per-user ID that
 // each person supplies via `claude-presence setup` or their config file.
 // ════════════════════════════════════════════════════════════════════════════
-const DEFAULT_CLIENT_ID = '';
+const DEFAULT_CLIENT_ID = '1515659802209026170';
 
 const DEFAULT_CONFIG = {
   // ── Discord ───────────────────────────────────────────────────────────
