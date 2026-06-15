@@ -546,7 +546,7 @@ Bug reports and feature requests via
 
 ## License
 
-[MIT](LICENSE) © 2026 Dayshan Spiteri.
+[MIT](LICENSE) © HeavenDCS.
 
 Unofficial and not affiliated with Anthropic or Discord. "Claude" and "Discord" are trademarks of
 their respective owners, used here only to describe interoperability.
