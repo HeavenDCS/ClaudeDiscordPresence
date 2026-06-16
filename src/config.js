@@ -68,6 +68,9 @@ const DEFAULT_CONFIG = {
     planLabel: 'Claude', // e.g. "Claude", "Claude Pro", "Claude Max"
     showToday: true,
     showMonth: true,
+    // Also show the plan on the always-visible second line (as "Model · Plan"),
+    // not just in the large-icon hover tooltip. Off by default.
+    showOnCard: false,
   },
 
   // ── Presence appearance ───────────────────────────────────────────────

@@ -48,6 +48,26 @@ test('build prefixes the model when model.show and a model is given', () => {
   assert.strictEqual(a.state, 'Opus 4.8 · Active state');
 });
 
+test('build puts the plan on the 2nd line when usage.showOnCard is set', () => {
+  const cfg = {
+    ...baseCfg,
+    model: { show: true, label: 'Opus 4.8' },
+    usage: { show: true, showOnCard: true, planLabel: 'Claude Max' },
+  };
+  const a = presence.build({ running: true, active: true, model: 'Opus 4.8' }, cfg);
+  assert.strictEqual(a.state, 'Opus 4.8 · Claude Max');
+});
+
+test('build keeps the status line when showOnCard is off', () => {
+  const cfg = {
+    ...baseCfg,
+    model: { show: false },
+    usage: { show: true, showOnCard: false, planLabel: 'Claude Max' },
+  };
+  const a = presence.build({ running: true, active: true }, cfg);
+  assert.strictEqual(a.state, 'Active state');
+});
+
 test('build rotates the top line through rotateMessages', () => {
   const cfg = { ...baseCfg, presence: { ...baseCfg.presence, rotateMessages: ['Alpha', 'Bravo', 'Charlie'] } };
   assert.strictEqual(presence.build({ running: true, rotationIndex: 0 }, cfg).details, 'Alpha');

@@ -36,8 +36,13 @@ function build(state, cfg) {
     details = msgs[i];
   }
 
-  // Second line: status, optionally prefixed with the model in use.
+  // Second line: the model, then either the live status or — when usage.showOnCard
+  // is enabled — your plan label, so the plan is visible without hovering the icon.
+  const usage = cfg.usage || {};
   let statusText = active ? p.stateActive : p.stateIdle;
+  if (usage.show && usage.showOnCard && usage.planLabel) {
+    statusText = usage.planLabel;
+  }
   const model = cfg.model || {};
   if (model.show) {
     const modelName = state.model || model.label;
@@ -46,7 +51,6 @@ function build(state, cfg) {
 
   // Logo tooltip: plan name + locally-measured usage time (never a $ figure).
   let largeText = p.largeText || 'Claude';
-  const usage = cfg.usage || {};
   if (usage.show) {
     const parts = [];
     if (usage.planLabel) parts.push(usage.planLabel);

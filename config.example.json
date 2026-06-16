@@ -20,12 +20,13 @@
     "detect": true
   },
 
-  "//usage": "The desktop app is a flat subscription (no per-message $), so we show your plan name + real local time instead of a misleading dollar figure.",
+  "//usage": "The desktop app is a flat subscription (no per-message $), so we show your plan name + real local time instead of a misleading dollar figure. Set showOnCard:true to also put the plan on the always-visible second line (Model · Plan), not just the hover tooltip.",
   "usage": {
     "show": true,
     "planLabel": "Claude",
     "showToday": true,
-    "showMonth": true
+    "showMonth": true,
+    "showOnCard": false
   },
 
   "//presence": "How the status looks. Image values are EITHER an asset key uploaded to your app OR a full https URL to a PNG/JPG (no upload needed).",

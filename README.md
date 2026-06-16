@@ -217,10 +217,12 @@ Instead it shows something honest and genuinely useful:
 - **Your plan name** — a label you set (`usage.planLabel`, e.g. `"Claude Max"`).
 - **Real local time used** — measured by this helper: today, and optionally this month.
 
-Together they render in the logo tooltip as **“Claude Max · 2h 14m today · 11h this month”**.
+Together they render in the logo tooltip as **“Claude Max · 2h 14m today · 11h this month”**. Add
+`"showOnCard": true` to *also* put the plan on the always-visible second line, e.g.
+**“Opus 4.8 · Claude Max”** — no hover needed.
 
 ```jsonc
-{ "usage": { "show": true, "planLabel": "Claude Max", "showToday": true, "showMonth": true } }
+{ "usage": { "show": true, "planLabel": "Claude Max", "showToday": true, "showMonth": true, "showOnCard": true } }
 ```
 
 > **What about real $ spend?** Dollar amounts only exist for the separate **Anthropic API**
@@ -285,6 +287,7 @@ A fully-commented reference copy lives at [`config.example.json`](config.example
 | `usage.show` | boolean | `true` | Show plan + time-used in the logo tooltip. |
 | `usage.planLabel` | string | `"Claude"` | Your plan name, e.g. `"Claude Pro"` / `"Claude Max"`. |
 | `usage.showToday` / `usage.showMonth` | boolean | `true` | Include today's / this month's total time. |
+| `usage.showOnCard` | boolean | `false` | Also show the plan on the always-visible second line (`Model · Plan`), not just the hover tooltip. |
 | `presence.activeType` | number | `0` | Activity verb: `0` Playing · `2` Listening · `3` Watching · `5` Competing. |
 | `presence.largeImage` | string | *(bundled `claude.png` URL)* | Big icon — an **asset key** *or* a full `https://` PNG/JPG URL. |
 | `presence.largeText` | string | `"Claude"` | Tooltip on the big icon (overridden by `usage` when enabled). |

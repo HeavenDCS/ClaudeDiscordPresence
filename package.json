@@ -42,7 +42,7 @@
     "install-autostart": "node bin/cli.js install",
     "uninstall-autostart": "node bin/cli.js uninstall",
     "check": "node scripts/syntax-check.js",
-    "test": "node --test"
+    "test": "cd test && node --test"
   },
   "engines": {
     "node": ">=16.0.0"
