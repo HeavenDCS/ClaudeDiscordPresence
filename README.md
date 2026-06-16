@@ -7,6 +7,7 @@
 When the Claude app is open, your friends see it on your Discord profile — with a logo,
 a live timer, rotating status messages, and clickable buttons.
 
+[![CI](https://github.com/HeavenDCS/claude-discord-presence/actions/workflows/ci.yml/badge.svg)](https://github.com/HeavenDCS/claude-discord-presence/actions/workflows/ci.yml)
 [![Node](https://img.shields.io/badge/node-%3E%3D16-43853d.svg)](https://nodejs.org)
 [![Zero dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](#why-zero-dependencies)
 [![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue.svg)](#requirements)
@@ -196,7 +197,7 @@ The Claude Desktop App doesn't expose the selected model anywhere stable, so thi
 - **`model.label`** *(reliable)* — whatever you set, e.g. `"Opus 4.8"`, shown as
   **“Opus 4.8 · Actively in a conversation”**. Never wrong, never breaks.
 - **`model.detect`** *(opt-in, best-effort)* — reads the model ID from your **newest local Claude
-  session file** and, if found, overrides the label. It reflects agent/Claude-Code sessions (not
+  session files** and, if found, overrides the label. It reflects agent/Claude-Code sessions (not
   necessarily your chat model), can lag or come up blank, and may stop working if the app changes
   its internals — so it **always falls back to your label**. It reads only the model-ID field,
   never your conversation content.
@@ -285,7 +286,7 @@ A fully-commented reference copy lives at [`config.example.json`](config.example
 | `usage.planLabel` | string | `"Claude"` | Your plan name, e.g. `"Claude Pro"` / `"Claude Max"`. |
 | `usage.showToday` / `usage.showMonth` | boolean | `true` | Include today's / this month's total time. |
 | `presence.activeType` | number | `0` | Activity verb: `0` Playing · `2` Listening · `3` Watching · `5` Competing. |
-| `presence.largeImage` | string | `"claude_logo"` | Big icon — an **asset key** *or* a full `https://` PNG/JPG URL. |
+| `presence.largeImage` | string | *(bundled `claude.png` URL)* | Big icon — an **asset key** *or* a full `https://` PNG/JPG URL. |
 | `presence.largeText` | string | `"Claude"` | Tooltip on the big icon (overridden by `usage` when enabled). |
 | `presence.smallImageActive` / `smallImageIdle` | string | `"active"` / `"idle"` | Small overlay icon — asset key or `https://` URL. |
 | `presence.smallTextActive` / `smallTextIdle` | string | `"Active"` / `"Idle"` | Tooltip on the small icon. |
@@ -509,7 +510,11 @@ claude-discord-presence/
 │   ├── stats.js             # local-only daily/monthly usage tracking
 │   ├── config.js            # defaults + load/merge/save (+ DEFAULT_CLIENT_ID)
 │   ├── logger.js            # leveled, rotating file logger
-│   └── paths.js             # per-OS data locations
+│   ├── paths.js             # per-OS data locations
+│   └── fs-utils.js          # atomic file writes (temp + rename)
+├── test/                    # node:test unit tests (run with `npm test`)
+├── scripts/                 # dev tooling (syntax-check.js → `npm run check`)
+├── .github/workflows/       # CI: tests + node --check on Windows/macOS/Linux
 ├── assets/                  # optional image(s) for presence (see assets/README.md)
 ├── config.example.json      # commented reference of every setting
 ├── package.json
@@ -536,7 +541,8 @@ PRs welcome — see below.
 
 1. Fork and branch (`git checkout -b feature/my-idea`).
 2. Keep it **dependency-free** and CommonJS.
-3. Run `node --check` on changed files and smoke-test with `claude-presence doctor`.
+3. Run `npm run check` and `npm test` (Node 20+), then smoke-test with
+   `claude-presence doctor`. CI runs the same across Windows/macOS/Linux.
 4. Open a PR describing the change and how you tested it.
 
 Bug reports and feature requests via
@@ -546,7 +552,7 @@ Bug reports and feature requests via
 
 ## License
 
-[MIT](LICENSE) © HeavenDCS.
+[MIT](LICENSE) © 2026 HeavenDCS.
 
 Unofficial and not affiliated with Anthropic or Discord. "Claude" and "Discord" are trademarks of
 their respective owners, used here only to describe interoperability.

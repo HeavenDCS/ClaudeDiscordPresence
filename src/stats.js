@@ -9,6 +9,7 @@
 
 const fs = require('fs');
 const { statsPath, ensureDataDir } = require('./paths');
+const { writeFileAtomic } = require('./fs-utils');
 
 const RETENTION_MS = 60 * 24 * 3600 * 1000; // keep ~60 days
 
@@ -31,7 +32,9 @@ function loadAll() {
 function saveAll(data) {
   try {
     ensureDataDir();
-    fs.writeFileSync(statsPath(), JSON.stringify(data));
+    // Atomic write: a crash mid-save can never truncate stats.json (which
+    // loadAll would then read as {} — silently wiping all usage history).
+    writeFileAtomic(statsPath(), JSON.stringify(data));
   } catch (_) {
     /* stats are best-effort; never crash the daemon over them */
   }

@@ -99,6 +99,10 @@ async function cmdStop() {
     print(`${DOT} Not running.`);
     return;
   }
+  // On POSIX this lets the daemon run its SIGTERM handler (graceful clear).
+  // On Windows there are no real signals — Node terminates the process
+  // immediately, so the daemon's shutdown() never runs; that's fine because
+  // Discord clears the presence on its own as soon as the IPC socket drops.
   try { process.kill(pid, 'SIGTERM'); } catch (_) {}
 
   const gone = await waitUntil(() => single.getRunningPid() == null, 3000);

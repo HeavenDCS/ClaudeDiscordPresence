@@ -13,7 +13,7 @@
     "desktop"
   ],
   "license": "MIT",
-  "author": "Dayshan Spiteri <spiteridayshan@gmail.com>",
+  "author": "HeavenDCS",
   "homepage": "https://github.com/HeavenDCS/claude-discord-presence#readme",
   "repository": {
     "type": "git",
@@ -40,7 +40,9 @@
     "status": "node bin/cli.js status",
     "doctor": "node bin/cli.js doctor",
     "install-autostart": "node bin/cli.js install",
-    "uninstall-autostart": "node bin/cli.js uninstall"
+    "uninstall-autostart": "node bin/cli.js uninstall",
+    "check": "node scripts/syntax-check.js",
+    "test": "node --test"
   },
   "engines": {
     "node": ">=16.0.0"

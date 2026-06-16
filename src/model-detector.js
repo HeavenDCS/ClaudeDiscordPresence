@@ -5,9 +5,10 @@
  *
  * IMPORTANT: the Claude Desktop App does NOT expose the selected model in any
  * stable, documented location. The only place a model ID reliably appears on
- * disk is inside Claude Code / agent-mode session files. We read the model ID
- * field from the most-recently-modified such file — nothing else. This is
- * inherently approximate (it reflects agent sessions, not necessarily the chat
+ * disk is inside Claude Code / agent-mode session files. We scan the few
+ * most-recently-modified such files and take the first model ID we find —
+ * nothing else. This is inherently approximate (it reflects agent sessions,
+ * not necessarily the chat
  * model) and may break when the app changes its internal layout, so callers
  * MUST treat a null result as normal and fall back to the configured label.
  *
@@ -26,6 +27,7 @@ const MODEL_RE = /claude-(?:opus|sonnet|haiku|fable)-[0-9]+(?:-[0-9]+)*/gi;
 const CACHE_TTL_MS = 60 * 1000;
 const MAX_READ_BYTES = 1024 * 1024; // cap how much of a session file we read
 const MAX_WALK_DEPTH = 6;
+const MAX_FILES_SCANNED = 12; // how many recent files to try before giving up
 
 let cache = { at: 0, value: null };
 
@@ -59,23 +61,19 @@ function* walkJson(dir, depth) {
   }
 }
 
-/** Path of the most-recently-modified session JSON file, or null. */
-function newestSessionFile() {
+/** Session JSON files, newest first, capped at `limit`. */
+function recentSessionFiles(limit) {
   const root = path.join(claudeAppDir(), 'claude-code-sessions');
-  let newest = null;
-  let newestMtime = 0;
+  const files = [];
   for (const file of walkJson(root, MAX_WALK_DEPTH)) {
     try {
-      const st = fs.statSync(file);
-      if (st.mtimeMs > newestMtime) {
-        newestMtime = st.mtimeMs;
-        newest = file;
-      }
+      files.push({ file, mtime: fs.statSync(file).mtimeMs });
     } catch (_) {
       /* ignore */
     }
   }
-  return newest;
+  files.sort((a, b) => b.mtime - a.mtime);
+  return files.slice(0, limit).map((f) => f.file);
 }
 
 /** "claude-opus-4-8" → "Opus 4.8"; "claude-haiku-4-5-20251001" → "Haiku 4.5". */
@@ -117,8 +115,12 @@ function detect() {
   if (now - cache.at < CACHE_TTL_MS) return cache.value;
   let value = null;
   try {
-    const file = newestSessionFile();
-    if (file) value = readModelFrom(file);
+    // Newest file first (the common case), falling back to slightly older
+    // sessions so one model-less file at the top doesn't blank out detection.
+    for (const file of recentSessionFiles(MAX_FILES_SCANNED)) {
+      value = readModelFrom(file);
+      if (value) break;
+    }
   } catch (_) {
     /* never let detection throw into the daemon loop */
   }

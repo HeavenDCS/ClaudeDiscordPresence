@@ -11,6 +11,7 @@
 
 const fs = require('fs');
 const { configPath, ensureDataDir } = require('./paths');
+const { writeFileAtomic } = require('./fs-utils');
 
 // ════════════════════════════════════════════════════════════════════════════
 // ► THE ONE-TIME SETUP SWITCH ◄
@@ -77,7 +78,7 @@ const DEFAULT_CONFIG = {
     // Each image is EITHER an art-asset key uploaded to your Discord app
     // (Developer Portal → Rich Presence → Art Assets) OR a full https URL to a
     // hosted PNG/JPG (no upload needed — Discord proxies it). See the README.
-    largeImage: 'claude_logo',
+    largeImage: 'https://raw.githubusercontent.com/HeavenDCS/claude-discord-presence/main/assets/claude.png',
     largeText: 'Claude',
     smallImageActive: 'active',
     smallImageIdle: 'idle',
@@ -127,7 +128,7 @@ function load() {
   ensureDataDir();
   const p = configPath();
   if (!fs.existsSync(p)) {
-    fs.writeFileSync(p, JSON.stringify(DEFAULT_CONFIG, null, 2));
+    writeFileAtomic(p, JSON.stringify(DEFAULT_CONFIG, null, 2));
     return JSON.parse(JSON.stringify(DEFAULT_CONFIG));
   }
   let user;
@@ -141,7 +142,9 @@ function load() {
 
 function save(cfg) {
   ensureDataDir();
-  fs.writeFileSync(configPath(), JSON.stringify(cfg, null, 2));
+  // Atomic write so a crash (or a concurrent reader) can't see a half-written
+  // config.json, which load() would then reject as invalid JSON.
+  writeFileAtomic(configPath(), JSON.stringify(cfg, null, 2));
 }
 
 /** True when the given value is not a usable Discord Application ID (digits only). */

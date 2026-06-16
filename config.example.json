@@ -31,7 +31,7 @@
   "//presence": "How the status looks. Image values are EITHER an asset key uploaded to your app OR a full https URL to a PNG/JPG (no upload needed).",
   "presence": {
     "activeType": 0,
-    "largeImage": "claude_logo",
+    "largeImage": "https://raw.githubusercontent.com/HeavenDCS/claude-discord-presence/main/assets/claude.png",
     "largeText": "Claude",
     "smallImageActive": "active",
     "smallImageIdle": "idle",

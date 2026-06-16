@@ -5,6 +5,23 @@ All notable changes to this project are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Added
+- **Test suite + CI.** A dependency-free [`node:test`](test/) suite covers the pure
+  logic (presence building, config merge/resolve, duration formatting, model-name
+  parsing, atomic writes, …). A GitHub Actions workflow runs the tests and a
+  `node --check` pass on every `.js` file across Windows/macOS/Linux on Node
+  20/22/24. New scripts: `npm test` and `npm run check`.
+
+### Fixed
+- **Usage stats can no longer be wiped by a crash.** `stats.json` (and `config.json`)
+  are now written atomically via a temp-file + rename, so a process killed
+  mid-write can never leave a truncated file — which `loadAll()` would otherwise
+  read as empty, silently resetting today's/this-month's totals.
+- **More reliable model auto-detection.** Detection now scans the few most-recent
+  Claude session files and takes the first model ID found, instead of reading only
+  the single newest file (which, if it happened to contain no model ID, blanked
+  out detection entirely).
+
 ### Changed
 - **Discord setup is now automatic by default.** With a shared `DEFAULT_CLIENT_ID`
   baked into `src/config.js`, installers get working Rich Presence with no Discord
@@ -13,6 +30,8 @@ All notable changes to this project are documented here. This project adheres to
   path (the README's setup section was rewritten accordingly).
 - Set the repository owner to **HeavenDCS** across `README.md`, `package.json`,
   `config.example.json`, and the in-app button URLs.
+- Ship a default `claude.png` logo and point `largeImage` at its raw GitHub URL,
+  so the large icon shows out of the box with no Discord art-asset upload.
 
 ## [1.1.0] — 2026-06-12
 

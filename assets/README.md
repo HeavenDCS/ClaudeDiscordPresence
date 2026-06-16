@@ -2,11 +2,12 @@
 
 This folder is for the image(s) your Discord Rich Presence shows.
 
-## The zero-upload path (easiest)
+## The zero-upload path (the default)
 
-Drop a square **PNG** here named `claude.png` (512×512 recommended), commit and
-push it, then point your config at the raw GitHub URL — no Discord asset upload
-needed:
+This build already does this: a square **`claude.png`** lives in this folder and
+`largeImage` points at its raw GitHub URL, so the logo shows with **no Discord
+asset upload**. To use your own art, replace `claude.png` (512×512 recommended)
+and keep the URL, or point `largeImage` at any public `https://` PNG/JPG:
 
 ```jsonc
 {
@@ -29,7 +30,7 @@ Rich Presence → Art Assets** and reference them by key:
 | `active` | small overlay when Claude is focused |
 | `idle` | small overlay when Claude is backgrounded |
 
-Then set `"largeImage": "claude_logo"` (the default) and so on.
+Then set `"largeImage": "claude_logo"` and so on.
 
-> A real Claude logo PNG is intentionally **not** bundled here to avoid shipping
-> trademarked artwork. Add your own image, or use an asset key as above.
+> The bundled `claude.png` is the image this build ships with. Replace it with
+> your own art any time, or switch `largeImage` to an asset key as above.
